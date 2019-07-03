@@ -102,6 +102,7 @@ def get_parsed_data(n=2000):
             parsed_data.append(vectorize_word_2d(word))
             labels.append(language_vectors[key])
             i += 1
+        del datasets[key]
     # for i in range(count):
     #     rand_length = random.randint(3, max_word_length - 1)
     #     parsed_data.append(
