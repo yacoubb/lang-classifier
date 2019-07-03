@@ -105,7 +105,9 @@ def get_parsed_data(n=1000, langs=get_default_languages()):
     return (np.array(parsed_data), np.array(labels))
 
 
-def vector_to_language(vec):
+def vector_to_language(vec, langs):
+    if langs != None:
+        return langs[np.argmax(vec)]
     return languages[np.argmax(vec)]
 
 

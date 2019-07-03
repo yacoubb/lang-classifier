@@ -20,7 +20,7 @@ def estimate_model_accuracy(model):
 
         result = model.predict(vector_word)
 
-        return utils.vector_to_language(result)
+        return utils.vector_to_language(result, languages)
 
     languages = []
     with open("./RMS_model/metadata.json", "r") as metadata_file:
