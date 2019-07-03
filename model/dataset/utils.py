@@ -81,7 +81,9 @@ def get_parsed_data(n=2000):
             print("loading:", lang)
             with open(langfile_path, "r", newline="") as langfile:
                 words = langfile.readlines()
-                words = list(filter(lambda x: len(x) < max_word_length, words))
+                words = list(
+                    filter(lambda x: len(x) < max_word_length and len(x) > 0, words)
+                )
                 word_count = len(words)
                 print(lang, word_count)
                 i = 0
