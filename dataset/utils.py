@@ -38,21 +38,6 @@ for char in alphabet:
     alphabet_vectors[char] = vec
 
 
-def load_datasets():
-    datasets = {}
-    for lang in languages:
-        langfile_path = os.path.join(
-            folder_path, "languages_converted", (lang + ".txt")
-        )
-        if os.path.exists(langfile_path):
-            print("loading:", lang)
-            datasets[lang] = []
-            with open(langfile_path, "r", newline="") as langfile:
-                datasets[lang] = langfile.readlines()
-    print("loaded", len(datasets.keys()), "languages into memory")
-    return datasets
-
-
 def vectorize_word(word):
     parsed_word = []
     for char in word:
@@ -85,24 +70,30 @@ def vectorize_word_2d(word):
 
 
 def get_parsed_data(n=2000):
-    datasets = load_datasets()
     parsed_data = []
     labels = []
 
-    for key in datasets:
-        datasets[key] = list(filter(lambda x: len(x) < max_word_length, datasets[key]))
-        word_count = len(datasets[key])
-        print(key, word_count)
-        i = 0
-        while i < min(word_count, n):
-            # word = random.choice(datasets[key])
-            word = datasets[key][i]
-            if len(word) > max_word_length:
-                continue
-            parsed_data.append(vectorize_word_2d(word))
-            labels.append(language_vectors[key])
-            i += 1
-        del datasets[key]
+    for lang in languages:
+        langfile_path = os.path.join(
+            folder_path, "languages_converted", (lang + ".txt")
+        )
+        if os.path.exists(langfile_path):
+            print("loading:", lang)
+            with open(langfile_path, "r", newline="") as langfile:
+                words = langfile.readlines()
+                words = list(filter(lambda x: len(x) < max_word_length, words))
+                word_count = len(words)
+                print(lang, word_count)
+                i = 0
+                while i < min(word_count, n):
+                    # word = random.choice(words)
+                    word = words[i]
+                    if len(word) > max_word_length:
+                        continue
+                    parsed_data.append(vectorize_word_2d(word))
+                    labels.append(language_vectors[key])
+                    i += 1
+                del words
     # for i in range(count):
     #     rand_length = random.randint(3, max_word_length - 1)
     #     parsed_data.append(
@@ -142,3 +133,7 @@ def total_conversion(line):
     converted_line = converted_line.lower()
     converted_line = re.sub("[^a-zA-Z ]+", "", converted_line)
     return converted_line
+
+
+if __name__ == "__main__":
+    get_parsed_data(2000)
