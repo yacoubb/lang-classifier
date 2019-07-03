@@ -99,6 +99,6 @@ def compare_chars_to_languages():
 
 if __name__ == "__main__":
     split_newspaper()
-    get_all_chars()
-    compare_chars_to_languages()
+    # get_all_chars()
+    # compare_chars_to_languages()
 
