@@ -14,6 +14,7 @@ if not os.path.isdir(os.path.join(folder_path, "languages_converted")):
     os.mkdir(os.path.join(folder_path, "languages_converted"))
 
 language_vectors = {}
+languages = []
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 alphabet_vectors = {}
@@ -55,6 +56,7 @@ def vectorize_word_2d(word):
 
 
 def get_default_languages():
+    global languages
     languages = ["random"] + list(
         map(
             lambda x: x[:-4],
@@ -67,7 +69,9 @@ def get_default_languages():
     return languages
 
 
-def initalise_language_vectors(languages):
+def initalise_language_vectors(langs):
+    global languages
+    languages = langs
     global language_vectors
     for i in range(len(languages)):
         vec = [0 for j in range(len(languages))]
@@ -79,7 +83,7 @@ def get_parsed_data(n=1000, langs=get_default_languages()):
     initalise_language_vectors(langs)
     parsed_data = []
     labels = []
-
+    print("language list", langs)
     for lang in langs:
         langfile_path = os.path.join(
             folder_path, "languages_converted", (lang + ".txt")
