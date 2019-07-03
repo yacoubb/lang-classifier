@@ -63,11 +63,11 @@ model.fit(
     data, labels, epochs=20, batch_size=128, validation_data=(val_data, val_labels)
 )
 
-if os.path.isdir("./model"):
-    shutil.rmtree("./model")
-os.mkdir("./model")
-model.save("model/lang_predictor_RMS.h5")
-with open("model/metadata.json", "w+") as metadata_file:
+if os.path.isdir("RMS_model"):
+    shutil.rmtree("RMS_model")
+os.mkdir("RMS_model")
+model.save("RMS_model/model.h5")
+with open("RMS_model/metadata.json", "w+") as metadata_file:
     metadata = {
         "maxWordLength": utils.max_word_length,
         "alphabet": utils.alphabet,

@@ -1,0 +1,14 @@
+{
+    "maxWordLength": 20,
+    "alphabet": "abcdefghijklmnopqrstuvwxyz",
+    "languages": [
+        "random",
+        "welsh",
+        "portuguese",
+        "swedish",
+        "dutch",
+        "german",
+        "chinese",
+        "english"
+    ]
+}
