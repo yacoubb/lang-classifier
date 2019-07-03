@@ -60,7 +60,7 @@ model.compile(
 
 
 model.fit(
-    data, labels, epochs=40, batch_size=128, validation_data=(val_data, val_labels)
+    data, labels, epochs=20, batch_size=128, validation_data=(val_data, val_labels)
 )
 
 if os.path.isdir("./model"):

@@ -8,6 +8,7 @@ import json
 
 sys.path.append("./datasets")
 import utils
+import sampler
 
 
 def estimate_model_accuracy(model):
@@ -21,29 +22,26 @@ def estimate_model_accuracy(model):
 
         return utils.vector_to_language(result)
 
+    sampler.get_sample(1000)
+
     test_words = {}
     with open("./datasets/test_words.json", "r") as test_word_file:
         test_words = json.load(test_word_file)
-        # test_words = test_word_file.read().splitlines()
 
     results = []
     for key in test_words:
         print(key)
         correct = 0.0
         total = 0.0
+        word_predictions = []
         for word in test_words[key]:
             total += 1.0
             prediction = predict(word)
+            word_predictions.append((word, prediction))
             if predict(word) == key:
                 correct += 1.0
-        results.append((key, correct * 100.0 / total))
 
-    # results = []
-    # for word in test_words:
-    #     if len(word) == 0:
-    #         print("")
-    #         continue
-    #     results.append(predict(word))
+        results.append((key, correct * 100.0 / total))
 
     from tabulate import tabulate
 
@@ -54,15 +52,17 @@ def estimate_model_accuracy(model):
         sum(map(lambda x: x[1], results)) / len(results)
     )
     summary += "\n"
-    return summary
+    return summary, word_predictions
 
 
-total_testing = ""
-total_testing += "RMS\n"
-total_testing += estimate_model_accuracy(load_model("lang_predictor_RMS.h5"))
-total_testing += "=" * 30 + "\n"
-total_testing += "sgd\n"
-total_testing += estimate_model_accuracy(load_model("lang_predictor_sgd.h5"))
+summary, all_predictions = estimate_model_accuracy(
+    load_model("./model/lang_predictor_RMS.h5")
+)
+print(summary)
 
-with open("./testing_results.txt", "w+") as test_file:
-    test_file.write(total_testing)
+with open("./model/testing.txt", "w+") as test_file:
+    test_file.write(summary)
+    test_file.write("=" * 20)
+    for word, pred in all_predictions:
+        test_file.write(word + ", " + pred + "\n")
+
