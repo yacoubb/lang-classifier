@@ -29,7 +29,7 @@ def test_data():
     return (data, labels)
 
 
-data, labels = utils.get_parsed_data(1000000)
+data, labels = utils.get_parsed_data(100000)
 # data, labels = test_data()
 print(data[0], labels[0])
 # double_shuffle(data, labels)
