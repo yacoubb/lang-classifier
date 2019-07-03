@@ -23,7 +23,7 @@ def estimate_model_accuracy(model):
         return utils.vector_to_language(result)
 
     languages = []
-    with open("./RSM_model/metadata.json", "r") as metadata_file:
+    with open("./RMS_model/metadata.json", "r") as metadata_file:
         metadata = json.load(metadata_file)
         languages = metadata["languages"]
 
