@@ -1,0 +1,5 @@
+.vscode
+*.tsv
+*.zip
+ssh
+node_modules/
