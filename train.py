@@ -6,7 +6,7 @@ import sys
 import os
 import shutil
 
-sys.path.append("./datasets/")
+sys.path.append("./dataset/")
 import utils
 
 alphabet_size = len(utils.alphabet)
