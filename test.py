@@ -25,7 +25,7 @@ def estimate_model_accuracy(model):
     sampler.get_sample(1000)
 
     test_words = {}
-    with open("./dataset/test_words.json", "r") as test_word_file:
+    with open("./test_words.json", "r") as test_word_file:
         test_words = json.load(test_word_file)
 
     results = []
