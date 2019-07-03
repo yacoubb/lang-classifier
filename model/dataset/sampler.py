@@ -10,9 +10,10 @@ import utils
 def get_sample(n=1000, languages=utils.get_default_languages()):
     sample = {}
     folder_path = "/".join(__file__.split("/")[:-1])
-    for lang in os.listdir(os.path.join(folder_path, "languages_converted/")):
-        if not lang.endswith(".txt"):
+    for lang in languages:
+        if not os.path.exists(os.path.join(folder_path, (lang + ".txt"))):
             continue
+        lang = lang + ".txt"
         print(lang[:-4])
         sample[lang[:-4]] = []
         with open(
