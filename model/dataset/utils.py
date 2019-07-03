@@ -13,23 +13,7 @@ folder_path = "/".join(__file__.split("/")[:-1])
 if not os.path.isdir(os.path.join(folder_path, "languages_converted")):
     os.mkdir(os.path.join(folder_path, "languages_converted"))
 
-languages = ["random"] + list(
-    map(
-        lambda x: x[:-4],
-        filter(
-            lambda x: x.endswith(".txt"),
-            os.listdir(os.path.join(folder_path, "languages_converted")),
-        ),
-    )
-)
-print(languages)
-# languages = ["random", "english"]
-
 language_vectors = {}
-for i in range(len(languages)):
-    vec = [0 for j in range(len(languages))]
-    vec[i] = 1
-    language_vectors[languages[i]] = vec
 
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 alphabet_vectors = {}
@@ -70,11 +54,33 @@ def vectorize_word_2d(word):
     return np.array(parsed_word)
 
 
-def get_parsed_data(n=2000):
+def get_default_languages():
+    languages = ["random"] + list(
+        map(
+            lambda x: x[:-4],
+            filter(
+                lambda x: x.endswith(".txt"),
+                os.listdir(os.path.join(folder_path, "languages_converted")),
+            ),
+        )
+    )
+    return languages
+
+
+def initalise_language_vectors(languages):
+    global language_vectors
+    for i in range(len(languages)):
+        vec = [0 for j in range(len(languages))]
+        vec[i] = 1
+        language_vectors[languages[i]] = vec
+
+
+def get_parsed_data(n=1000, langs=get_default_languages()):
+    initalise_language_vectors(langs)
     parsed_data = []
     labels = []
 
-    for lang in languages:
+    for lang in langs:
         langfile_path = os.path.join(
             folder_path, "languages_converted", (lang + ".txt")
         )

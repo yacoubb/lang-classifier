@@ -12,7 +12,7 @@ import utils
 alphabet_size = len(utils.alphabet)
 
 
-def train_and_save_model(n):
+def train_and_save_model(n=1000, langs=None):
     def double_shuffle(a, b):
         rng_state = np.random.get_state()
         np.random.shuffle(a)
@@ -28,7 +28,12 @@ def train_and_save_model(n):
         )
         return (data, labels)
 
-    data, labels = utils.get_parsed_data(n)
+    data = []
+    labels = []
+    if langs != None:
+        data, labels = utils.get_parsed_data(n, langs)
+    else:
+        data, labels = utils.get_parsed_data(n)
     # data, labels = test_data()
     print(data[0], labels[0])
     # double_shuffle(data, labels)
@@ -88,5 +93,10 @@ if __name__ == "__main__":
         "trainsamples", metavar="N", type=int, help="number of training samples to use"
     )
 
+    parser.add_argument(
+        "-l", "--langs", nargs="*", help="(optional) languages to use", required=False
+    )
+
     args = parser.parse_args()
-    train_and_save_model(args.trainsamples)
+    train_and_save_model(args.trainsamples, args.langs)
+
