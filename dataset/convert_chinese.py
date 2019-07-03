@@ -16,5 +16,5 @@ def convert(file_path):
 
 if __name__ == "__main__":
     convert("./languages/Chinese (Simplified).txt")
-    convert("./languages/Chinese (Traditional).txt")
+    # convert("./languages/Chinese (Traditional).txt")
 

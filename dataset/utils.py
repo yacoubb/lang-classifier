@@ -9,6 +9,8 @@ import unidecode
 max_word_length = 20
 
 folder_path = "/".join(__file__.split("/")[:-1])
+if not os.path.isdir("./languages_converted"):
+    os.mkdir("./languages_converted")
 
 languages = ["random"] + list(
     map(
@@ -89,10 +91,12 @@ def get_parsed_data(n=2000):
 
     for key in datasets:
         datasets[key] = list(filter(lambda x: len(x) < max_word_length, datasets[key]))
-        print(key, len(datasets[key]))
+        word_count = len(datasets[key])
+        print(key, word_count)
         i = 0
-        while i < n:
-            word = random.choice(datasets[key])
+        while i < min(word_count, n):
+            # word = random.choice(datasets[key])
+            word = datasets[key][i]
             if len(word) > max_word_length:
                 continue
             parsed_data.append(vectorize_word_2d(word))
