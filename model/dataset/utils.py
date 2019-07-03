@@ -9,8 +9,9 @@ import unidecode
 max_word_length = 20
 
 folder_path = "/".join(__file__.split("/")[:-1])
-if not os.path.isdir("./languages_converted"):
-    os.mkdir("./languages_converted")
+
+if not os.path.isdir(os.path.join(folder_path, "languages_converted")):
+    os.mkdir(os.path.join(folder_path, "languages_converted"))
 
 languages = ["random"] + list(
     map(
@@ -87,23 +88,10 @@ def get_parsed_data(n=2000):
                 word_count = len(words)
                 print(lang, word_count)
                 i = 0
-                while i < min(word_count, n):
-                    # word = random.choice(words)
-                    word = words[i]
-                    if len(word) > max_word_length:
-                        continue
-                    parsed_data.append(vectorize_word_2d(word))
-                    labels.append(language_vectors[lang])
-                    i += 1
-                del words
-    # for i in range(count):
-    #     rand_length = random.randint(3, max_word_length - 1)
-    #     parsed_data.append(
-    #         vectorize_word(
-    #             "".join([random.choice(alphabet_indicies) for i in range(rand_length)])
-    #         )
-    #     )
-    #     labels.append(language_vectors["random"])
+                selection = random.choices(words, k=min(n, word_count))
+                parsed_data.extend(list(map(lambda x: vectorize_word_2d(x), selection)))
+                labels.extend([language_vectors[lang] for j in range(len(selection))])
+                del selection
 
     return (np.array(parsed_data), np.array(labels))
 

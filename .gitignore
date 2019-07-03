@@ -3,3 +3,5 @@
 *.zip
 ssh
 node_modules/
+__pycache__
+languages_converted

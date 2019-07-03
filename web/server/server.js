@@ -46,12 +46,8 @@ app.get('/group1-shard1of1.bin', (req, res) => {
 	readStream.pipe(res);
 });
 
+const metadata = JSON.parse(fs.readFileSync('./converted_model/metadata.json'));
+
 app.get('/metadata', (req, res) => {
-	res.json(
-		JSON.stringify({
-			maxWordLength: 20,
-			alphabet: 'abcdefghijklmnopqrstuvwxyz',
-			languages: ['random', 'german', 'swedish', 'chinese', 'english', 'portugese', 'welsh', 'dutch']
-		})
-	);
+	res.json(metadata);
 });

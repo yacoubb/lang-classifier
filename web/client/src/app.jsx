@@ -14,7 +14,7 @@ var zeroVec = [];
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { model: 'loading', metadata: 'loading', word: [] };
+		this.state = { model: 'loading', metadata: 'loading', word: [], predictedLanguage: '' };
 		this.keyPressHandler.bind(this);
 		this.vectorize_word.bind(this);
 		model
@@ -28,8 +28,8 @@ class App extends Component {
 			});
 		xhr.onreadystatechange = () => {
 			if (xhr.readyState === 4 && xhr.status === 200) {
+				console.log(xhr.responseText);
 				var jsonData = JSON.parse(xhr.responseText);
-				jsonData = JSON.parse(jsonData);
 				this.setState({ metadata: jsonData });
 				alphabet_vectors = {};
 				alphabet = jsonData.alphabet;
@@ -67,7 +67,11 @@ class App extends Component {
 		}
 		newWord = newWord.slice(0, this.state.metadata.maxWordLength);
 		this.setState({ word: newWord });
-		this.predict();
+		if (newWord.length > 0) {
+			this.predict();
+		} else {
+			this.setState({ predictedLanguage: '' });
+		}
 	};
 
 	vectorize_word(wordArr) {
@@ -75,22 +79,38 @@ class App extends Component {
 		for (const idx in wordArr) {
 			if (Object.keys(alphabet_vectors).indexOf(wordArr[idx]) === -1) {
 				parsedWord.push(zeroVec);
+				continue;
 			}
-			parsedWord = parsedWord.push(alphabet_vectors[wordArr[idx]]);
+			parsedWord.push(alphabet_vectors[wordArr[idx]]);
 		}
 		const zeroVecsToAdd = this.state.metadata.maxWordLength - parsedWord.length;
 		for (let i = 0; i < zeroVecsToAdd; i++) {
 			parsedWord.push(zeroVec);
 		}
 		// return tf.tensor(parsedWord, (null, 520));
-		return tf.tensor2d(parsedWord);
+		return tf.tensor3d([parsedWord]);
 	}
 
 	predict = () => {
 		let vec_word = this.vectorize_word(this.state.word);
-		// vec_word = tf.reshape(vec_word, [null, 520]);
-		console.log(this.state.model.predict(vec_word));
+		const prediction = this.state.model.predict(vec_word);
+		const tList = this.tensorToList(prediction);
+		this.setState({ predictedLanguage: this.state.metadata.languages[this.argMax(tList)] });
 	};
+
+	tensorToList(tensor) {
+		const tStr = tensor.toString();
+		const tList = tStr
+			.split('[')[2]
+			.split(']')[0]
+			.split(', ');
+
+		return tList.map((v, i) => parseFloat(v));
+	}
+
+	argMax(array) {
+		return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+	}
 
 	render() {
 		if (this.state.model === 'loading' || this.state.metadata === 'loading') {
@@ -106,7 +126,6 @@ class App extends Component {
 				</div>
 			);
 		} else {
-			console.log(this.state);
 			const letterSpaces = [];
 			for (let i = 0; i < this.state.metadata.maxWordLength; i++) {
 				if (i < this.state.word.length) {
@@ -120,12 +139,15 @@ class App extends Component {
 					<div style={{ textAlign: 'center' }}>
 						<p>LOADED MODEL MATE</p>
 					</div>
-					<div style={{ textAlign: 'center' }}>
+					<div className="centerHoriz" style={{ paddingTop: '5%', textAlign: 'center' }}>
 						{letterSpaces.map((value, index) => (
 							<div key={index} style={{ float: 'left', margin: '0.5em' }}>
 								<h1>{value}</h1>
 							</div>
 						))}
+					</div>
+					<div className="centerHoriz" style={{ paddingTop: '10%' }}>
+						<h1>{this.state.predictedLanguage}</h1>
 					</div>
 				</div>
 			);
