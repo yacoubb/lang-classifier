@@ -132,7 +132,7 @@ def total_conversion(line):
     converted_line = manual_conversion(line)
     converted_line = unidecode.unidecode(line)
     converted_line = converted_line.lower()
-    converted_line = re.sub("[^a-zA-Z ]+", "", converted_line)
+    converted_line = re.sub("[^a-zA-Z ]+", " ", converted_line)
     return converted_line
 
 

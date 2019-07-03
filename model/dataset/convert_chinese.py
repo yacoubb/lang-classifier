@@ -7,7 +7,11 @@ def convert(file_path):
         print("opened original file")
         original_lines = chinese_file.readlines()
         for line in original_lines:
-            converted_lines.append(pinyin.get(line, format="strip", delimiter=" "))
+            converted_line = ""
+            for word in line.split(" "):
+                converted_line += pinyin.get(word, format="strip", delimiter="")
+                converted_line += " "
+            converted_lines.append(converted_line)
     with open(file_path[:-4] + "_converted" + file_path[-4:], "w+") as converted_file:
         print("writing conversion")
         for line in converted_lines:

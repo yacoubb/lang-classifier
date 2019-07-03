@@ -4,4 +4,6 @@
 ssh
 node_modules/
 __pycache__
+languages
+languages_to_convert
 languages_converted
