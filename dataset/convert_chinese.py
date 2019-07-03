@@ -1,0 +1,26 @@
+import pinyin
+
+
+def convert(file_path):
+    converted_lines = []
+    with open(file_path, "r") as chinese_file:
+        print("opened original file")
+        count = 0
+        original_lines = chinese_file.readlines()
+        total_line_count = len(original_lines)
+        for line in original_lines:
+            count += 1
+            if count % 1000 == 0:
+                print(count, "/", total_line_count)
+            converted_lines.append(pinyin.get(line, format="strip", delimiter=" "))
+
+    with open(file_path[:-4] + "_converted" + file_path[-4:], "w+") as converted_file:
+        print("writing conversion")
+        for line in converted_lines:
+            converted_file.write(line + "\n")
+
+
+if __name__ == "__main__":
+    convert("./languages/Chinese (Simplified).txt")
+    convert("./languages/Chinese (Traditional).txt")
+
