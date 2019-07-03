@@ -15,7 +15,7 @@ def estimate_model_accuracy(model):
     def predict(word):
         word = utils.total_conversion(word)
         word = word[: utils.max_word_length]
-        vector_word = utils.vectorize_word(word)
+        vector_word = utils.vectorize_word_2d(word)
         vector_word = np.array([vector_word])
 
         result = model.predict(vector_word)
