@@ -22,7 +22,12 @@ def estimate_model_accuracy(model):
 
         return utils.vector_to_language(result)
 
-    sampler.get_sample(1000)
+    languages = []
+    with open("./RSM_model/metadata.json", "r") as metadata_file:
+        metadata = json.load(metadata_file)
+        languages = metadata["languages"]
+
+    sampler.get_sample(1000, languages)
 
     test_words = {}
     with open("./dataset/test_words.json", "r") as test_word_file:

@@ -1,9 +1,13 @@
 import os
 import random
 import json
+import sys
+
+sys.path.append("./")
+import utils
 
 
-def get_sample(n=1000):
+def get_sample(n=1000, languages=utils.get_default_languages()):
     sample = {}
     folder_path = "/".join(__file__.split("/")[:-1])
     for lang in os.listdir(os.path.join(folder_path, "languages_converted/")):

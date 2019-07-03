@@ -56,7 +56,6 @@ def vectorize_word_2d(word):
 
 
 def get_default_languages():
-    global languages
     languages = ["random"] + list(
         map(
             lambda x: x[:-4],
