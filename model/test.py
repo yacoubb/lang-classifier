@@ -55,12 +55,10 @@ def estimate_model_accuracy(model):
     return summary, word_predictions
 
 
-summary, all_predictions = estimate_model_accuracy(
-    load_model("./model/lang_predictor_RMS.h5")
-)
+summary, all_predictions = estimate_model_accuracy(load_model("./RMS_model/model.h5"))
 print(summary)
 
-with open("./model/testing.txt", "w+") as test_file:
+with open("./RMS_model/testing.txt", "w+") as test_file:
     test_file.write(summary)
     test_file.write("=" * 20)
     for word, pred in all_predictions:
