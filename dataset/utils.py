@@ -91,7 +91,7 @@ def get_parsed_data(n=2000):
                     if len(word) > max_word_length:
                         continue
                     parsed_data.append(vectorize_word_2d(word))
-                    labels.append(language_vectors[key])
+                    labels.append(language_vectors[lang])
                     i += 1
                 del words
     # for i in range(count):
