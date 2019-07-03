@@ -34,11 +34,11 @@ def estimate_model_accuracy(model):
         test_words = json.load(test_word_file)
 
     results = []
+    word_predictions = []
     for key in test_words:
         print(key)
         correct = 0.0
         total = 0.0
-        word_predictions = []
         for word in test_words[key]:
             total += 1.0
             prediction = predict(word)
@@ -65,7 +65,7 @@ print(summary)
 
 with open("./RMS_model/testing.txt", "w+") as test_file:
     test_file.write(summary)
-    test_file.write("=" * 20)
+    test_file.write("=" * 20 + "\n")
     for word, pred in all_predictions:
         test_file.write(word + ", " + pred + "\n")
 
