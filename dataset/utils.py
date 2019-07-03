@@ -103,7 +103,7 @@ def get_parsed_data(n=2000):
     #     )
     #     labels.append(language_vectors["random"])
 
-    return (np.array(parsed_data), np.array(labels), languages)
+    return (np.array(parsed_data), np.array(labels))
 
 
 def vector_to_language(vec):
