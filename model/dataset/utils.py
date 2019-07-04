@@ -121,6 +121,9 @@ def manual_conversion(word):
         u"ü": "ue",
         u"å": "oa",
         u"š": "sh",
+        u"í": "ee",
+        u"ð": "th",
+        u"þ": "th",
     }
     for key, value in diacritics.items():
         if key in word:
