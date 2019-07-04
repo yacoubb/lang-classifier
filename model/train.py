@@ -1,8 +1,8 @@
 import tensorflow as tf
-from tf import keras
-from tf.keras import layers
-from tf.keras.models import load_model
-from tf.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.models import load_model
+from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from sklearn.utils import shuffle
 import numpy as np
 import sys
