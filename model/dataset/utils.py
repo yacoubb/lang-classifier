@@ -62,6 +62,9 @@ def vectorize_word(word):
     return parsed_word
 
 
+zero_vec = [0 for i in range(len(alphabet_vectors))]
+
+
 def vectorize_word_2d(word):
     parsed_word = []
     for char in word:
@@ -70,12 +73,7 @@ def vectorize_word_2d(word):
             # print("missed letter " + char + ", " + word)
             continue
         parsed_word.append(alphabet_vectors[char])
-    parsed_word.extend(
-        [
-            [0 for i in range(len(alphabet_vectors))]
-            for i in range(max_word_length - len(parsed_word))
-        ]
-    )
+    parsed_word.extend([[zero_vec] for i in range(max_word_length - len(parsed_word))])
     return np.array(parsed_word)
 
 
