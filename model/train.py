@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+from tensorflow.keras.models import load_model
 import numpy as np
 import sys
 import os
@@ -12,7 +13,7 @@ import utils
 alphabet_size = len(utils.alphabet)
 
 
-def train_and_save_model(n=1000, langs=None):
+def train_and_save_model(model_path="", n=1000, langs=None):
     def double_shuffle(a, b):
         rng_state = np.random.get_state()
         np.random.shuffle(a)
@@ -43,7 +44,6 @@ def train_and_save_model(n=1000, langs=None):
     labels = labels[: int(len(labels) * 0.9)]
 
     print(data.shape)
-
     model = tf.keras.Sequential(
         [
             layers.Flatten(input_shape=(utils.max_word_length, alphabet_size)),
@@ -51,6 +51,8 @@ def train_and_save_model(n=1000, langs=None):
             layers.Dense(len(utils.languages), activation="softmax"),
         ]
     )
+    if model_path != None:
+        model = load_model(model_path)
 
     print(model.summary())
 
@@ -90,13 +92,20 @@ if __name__ == "__main__":
         description="Train language classification algorithm."
     )
     parser.add_argument(
-        "trainsamples", metavar="N", type=int, help="number of training samples to use"
+        "trainsamples",
+        metavar="samplecount",
+        type=int,
+        help="number of training samples to use",
     )
 
     parser.add_argument(
-        "-l", "--langs", nargs="*", help="(optional) languages to use", required=False
+        "-langs", nargs="*", help="(optional) languages to use", required=False
+    )
+
+    parser.add_argument(
+        "-load", help="(optional) model path to load and train from", required=False
     )
 
     args = parser.parse_args()
-    train_and_save_model(args.trainsamples, args.langs)
+    train_and_save_model(args.load, args.trainsamples, args.langs)
 
