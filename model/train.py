@@ -1,11 +1,14 @@
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.models import load_model
+from tf import keras
+from tf.keras import layers
+from tf.keras.models import load_model
+from tf.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from sklearn.utils import shuffle
 import numpy as np
 import sys
 import os
 import shutil
+
 
 sys.path.append("./dataset/")
 import utils
@@ -37,7 +40,7 @@ def train_and_save_model(model_path="", n=1000, langs=None):
         data, labels = utils.get_parsed_data(n)
     # data, labels = test_data()
     print(data[0], labels[0])
-    # double_shuffle(data, labels)
+    data, labels = shuffle(data, labels)
     val_data = data[int(len(data) * 0.9) :]
     val_labels = labels[int(len(labels) * 0.9) :]
     data = data[: int(len(data) * 0.9) :]
@@ -60,14 +63,25 @@ def train_and_save_model(model_path="", n=1000, langs=None):
     model.compile(
         # optimizer=tf.train.RMSPropOptimizer(0.01),
         optimizer=tf.keras.optimizers.RMSprop(
-            lr=0.001, rho=0.9, epsilon=None, decay=0.0
+            lr=0.0005, rho=0.9, epsilon=None, decay=0.0
         ),
         loss=tf.keras.losses.categorical_crossentropy,
         metrics=[tf.keras.metrics.categorical_accuracy],
     )
 
+    reduce_lr = ReduceLROnPlateau(
+        monitor="val_loss", factor=0.2, patience=3, min_lr=0.00001
+    )
+
+    early_stopping = tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=5)
+
     model.fit(
-        data, labels, epochs=20, batch_size=128, validation_data=(val_data, val_labels)
+        data,
+        labels,
+        epochs=40,
+        batch_size=256,
+        validation_data=(val_data, val_labels),
+        callbacks=[reduce_lr, early_stopping],
     )
 
     if os.path.isdir("RMS_model"):
