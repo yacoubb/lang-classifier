@@ -27,12 +27,14 @@ def estimate_model_accuracy(model):
         metadata = json.load(metadata_file)
         languages = metadata["languages"]
 
+    print("starting sampler worker...")
     sampler.get_sample(1000, languages)
 
     test_words = {}
     with open("./dataset/test_words.json", "r") as test_word_file:
         test_words = json.load(test_word_file)
 
+    print("=" * 20 + " doing predictions " + "=" * 20)
     results = []
     word_predictions = []
     for key in test_words:
@@ -54,7 +56,8 @@ def estimate_model_accuracy(model):
     summary += tabulate(results, headers=["language", "accuracy"])
     summary += "\n"
     summary += "overall accuracy: {:2f}".format(
-        sum(map(lambda x: x[1], results)) / len(results)
+        sum(map(lambda x: x[1], results))
+        / len(list(filter(lambda x: x[1] > 0, results)))
     )
     summary += "\n"
     return summary, word_predictions
