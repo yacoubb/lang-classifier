@@ -15,12 +15,12 @@ if not os.path.isdir(os.path.join(folder_path, "languages_converted")):
 
 
 def get_default_languages():
-    languages = ["random"] + list(
+    languages = list(
         map(
             lambda x: x[:-4],
             filter(
                 lambda x: x.endswith(".txt"),
-                os.listdir(os.path.join(folder_path, "languages_converted")),
+                os.listdir(os.path.join(folder_path, "languages_train")),
             ),
         )
     )
@@ -77,7 +77,7 @@ def vectorize_word_2d(word):
     return np.array(parsed_word)
 
 
-def get_parsed_data(n=1000, langs=None, include_random=False):
+def get_parsed_data(n=1000, langs=None):
     if langs == None:
         langs = get_default_languages()
     parsed_data = []
@@ -100,18 +100,6 @@ def get_parsed_data(n=1000, langs=None, include_random=False):
                 parsed_data.extend(list(map(lambda x: vectorize_word_2d(x), selection)))
                 labels.extend([language_vectors[lang] for j in range(len(selection))])
                 del selection
-    if include_random:
-        random_words = []
-        for i in range(n):
-            random_words.append(
-                "".join(
-                    random.choice(alphabet)
-                    for _ in range(random.randint(4, max_word_length))
-                )
-            )
-        parsed_data.extend(list(map(lambda x: vectorize_word_2d(x), random_words)))
-        labels.extend([language_vectors["random"] for j in range(len(random_words))])
-        del random_words
 
     return (np.array(parsed_data), np.array(labels))
 

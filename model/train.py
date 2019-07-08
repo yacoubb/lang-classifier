@@ -12,7 +12,7 @@ from model.dataset import utils
 alphabet_size = len(utils.alphabet)
 
 
-def train_and_save_model(model_path="", n=1000, langs=None, include_random=False):
+def train_and_save_model(model_path="", n=1000, langs=None):
     def double_shuffle(a, b):
         rng_state = np.random.get_state()
         np.random.shuffle(a)
@@ -31,7 +31,7 @@ def train_and_save_model(model_path="", n=1000, langs=None, include_random=False
     data = []
     labels = []
 
-    data, labels = utils.get_parsed_data(n, langs, include_random)
+    data, labels = utils.get_parsed_data(n, langs)
     # data, labels = test_data()
     print(data[0], labels[0])
     data, labels = shuffle(data, labels)
@@ -112,12 +112,6 @@ if __name__ == "__main__":
         "-load", help="(optional) model path to load and train from", required=False
     )
 
-    parser.add_argument(
-        "--include_random",
-        help="include training on random characters",
-        action="store_true",
-    )
-
     args = parser.parse_args()
-    train_and_save_model(args.load, args.trainsamples, args.langs, args.include_random)
+    train_and_save_model(args.load, args.trainsamples, args.langs)
 

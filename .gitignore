@@ -9,4 +9,5 @@ __pycache__
 languages
 languages_to_convert
 languages_converted
+languages_train
 all_models

@@ -5,7 +5,7 @@ import sys
 import json
 
 sys.path.append("/".join(os.path.abspath(__file__).split("/")[:-2]))
-from model.dataset import utils, sampler
+from model.dataset import utils, test_sampler
 
 
 def estimate_model_accuracy(model):
@@ -25,7 +25,7 @@ def estimate_model_accuracy(model):
         languages = metadata["languages"]
 
     print("starting sampler worker...")
-    sampler.get_sample(1000, languages)
+    test_sampler.get_sample(1000, languages)
 
     test_words = {}
     with open("./dataset/test_words.json", "r") as test_word_file:
