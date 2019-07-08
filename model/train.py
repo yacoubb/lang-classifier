@@ -1,7 +1,4 @@
 from tensorflow import keras
-from keras import layers
-from keras.models import load_model
-from keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from sklearn.utils import shuffle
 import numpy as np
 import sys
@@ -46,13 +43,13 @@ def train_and_save_model(model_path="", n=1000, langs=None, include_random=False
     print(data.shape)
     model = keras.Sequential(
         [
-            layers.Flatten(input_shape=(utils.max_word_length, alphabet_size)),
-            layers.Dense(128, activation="relu"),
-            layers.Dense(len(utils.languages), activation="softmax"),
+            keras.layers.Flatten(input_shape=(utils.max_word_length, alphabet_size)),
+            keras.layers.Dense(128, activation="relu"),
+            keras.layers.Dense(len(utils.languages), activation="softmax"),
         ]
     )
     if model_path != None:
-        model = load_model(model_path)
+        model = keras.models.load_model(model_path)
 
     print(model.summary())
 
@@ -64,7 +61,7 @@ def train_and_save_model(model_path="", n=1000, langs=None, include_random=False
         metrics=[keras.metrics.categorical_accuracy],
     )
 
-    reduce_lr = ReduceLROnPlateau(
+    reduce_lr = keras.callbacks.ReduceLROnPlateau(
         monitor="val_loss", factor=0.2, patience=3, min_lr=0.00001
     )
 
