@@ -15,7 +15,7 @@ def sample_all_datasets(n=1000000):
     if os.path.isdir(os.path.join(folder_path, "languages_train")):
         shutil.rmtree(os.path.join(folder_path, "languages_train"))
     os.mkdir(os.path.join(folder_path, "languages_train"))
-    # generate_random.generate_random_dataset(n)
+    generate_random.generate_random_dataset(n)
     for lang in os.listdir(os.path.join(folder_path, "languages_converted")):
         print("loading", lang)
         words = []
