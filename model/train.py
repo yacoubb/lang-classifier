@@ -59,7 +59,7 @@ def train_and_save_model(model_path="", n=1000, langs=None, include_random=False
     # Configure a model for categorical classification.
     model.compile(
         # optimizer=tf.train.RMSPropOptimizer(0.01),
-        optimizer=keras.optimizers.RMSprop(lr=0.0005, rho=0.9, epsilon=None, decay=0.0),
+        optimizer=keras.optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0),
         loss=keras.losses.categorical_crossentropy,
         metrics=[keras.metrics.categorical_accuracy],
     )

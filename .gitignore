@@ -1,6 +1,8 @@
 .vscode
 *.tsv
 *.zip
+RMS_model
+converted_model
 ssh
 node_modules/
 __pycache__
