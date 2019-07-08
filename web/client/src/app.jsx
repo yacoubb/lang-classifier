@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import * as tf from '@tensorflow/tfjs';
 
-var xhr = new XMLHttpRequest();
-var url = 'http://localhost:3003/metadata';
-xhr.open('GET', url, true);
-xhr.send();
-
-const model = tf.loadLayersModel('http://localhost:3003/model');
+var xhr;
+var model;
 var alphabet = '';
 var alphabet_vectors = {};
 var zeroVec = [];
@@ -17,6 +13,12 @@ class App extends Component {
 		this.state = { model: 'loading', metadata: 'loading', word: [], predictedLanguage: '' };
 		this.keyPressHandler.bind(this);
 		this.vectorize_word.bind(this);
+		xhr = new XMLHttpRequest();
+		var url = 'http://localhost:3003/metadata';
+		xhr.open('GET', url, true);
+		xhr.send();
+
+		model = tf.loadLayersModel('http://localhost:3003/model');
 		model
 			.then(value => {
 				this.setState({ model: value });
@@ -136,10 +138,7 @@ class App extends Component {
 			}
 			return (
 				<div style={{ width: '100%' }}>
-					<div style={{ textAlign: 'center' }}>
-						<p>LOADED MODEL MATE</p>
-					</div>
-					<div className="centerHoriz" style={{ paddingTop: '5%', textAlign: 'center' }}>
+					<div className="centerHoriz" style={{ paddingTop: '10vh', textAlign: 'center' }}>
 						{letterSpaces.map((value, index) => (
 							<div key={index} style={{ float: 'left', margin: '0.5em' }}>
 								<h1>{value}</h1>

@@ -1,12 +1,14 @@
 body {
-	background: #6a4c93;
+	/* background: #6a4c93; */
 	/* background: purple; */
-	color: #f5f5f5;
+	/* color: #f5f5f5; */
+	background: #f5f5f5;
+	color: #393e41;
 	font-family: 'Roboto';
 }
 
 a {
-	color: #f5f5f5;
+	/* color: #f5f5f5; */
 }
 
 h1 {
