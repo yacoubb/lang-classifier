@@ -136,17 +136,18 @@ class App extends Component {
 					letterSpaces.push('_');
 				}
 			}
+			const displayStr = letterSpaces.join('');
 			return (
 				<div style={{ width: '100%' }}>
-					<div className="centerHoriz" style={{ paddingTop: '10vh', textAlign: 'center' }}>
-						{letterSpaces.map((value, index) => (
-							<div key={index} style={{ float: 'left', margin: '0.5em' }}>
-								<h1>{value}</h1>
-							</div>
-						))}
-					</div>
-					<div className="centerHoriz" style={{ paddingTop: '10%' }}>
-						<h1>{this.state.predictedLanguage}</h1>
+					<div style={{ margin: 'auto', paddingTop: '20vh', textAlign: 'center' }}>
+						<div style={{ height: '1em' }}>
+							{this.state.word.length === 0 ? (
+								<h1 style={{ color: '#D8D4D5', height: '1em' }}>type a word!</h1>
+							) : (
+								<h1>{this.state.predictedLanguage}</h1>
+							)}
+						</div>
+						{<h1 style={{ fontSize: '5vw', fontFamily: 'Roboto Mono' }}>{displayStr}</h1>}
 					</div>
 				</div>
 			);
