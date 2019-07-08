@@ -11,7 +11,7 @@ def generate_random_dataset(n=1000000):
     folder_path = "/".join(os.path.abspath(__file__).split("/")[:-1])
     if os.path.exists(os.path.join(folder_path, "languages_train", "random.txt")):
         os.remove(os.path.join(folder_path, "languages_train", "random.txt"))
-
+    print("generating random language dataset with {} words".format(n))
     with open(
         os.path.join(folder_path, "languages_train", "random.txt"), "w+"
     ) as random_file:

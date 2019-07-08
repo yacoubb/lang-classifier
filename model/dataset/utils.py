@@ -7,6 +7,7 @@ import re
 import unidecode
 
 max_word_length = 20
+min_word_length = 5
 
 folder_path = "/".join(__file__.split("/")[:-1])
 
@@ -90,7 +91,10 @@ def get_parsed_data(n=1000, langs=None):
             with open(langfile_path, "r", newline="") as langfile:
                 words = langfile.readlines()
                 words = list(
-                    filter(lambda x: len(x) < max_word_length and len(x) > 0, words)
+                    filter(
+                        lambda x: len(x) < max_word_length and len(x) > min_word_length,
+                        words,
+                    )
                 )
                 word_count = len(words)
                 print(lang, word_count)
