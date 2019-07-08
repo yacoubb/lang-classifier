@@ -7,7 +7,7 @@ import re
 import unidecode
 
 max_word_length = 20
-min_word_length = 5
+min_word_length = 1
 
 folder_path = "/".join(__file__.split("/")[:-1])
 
