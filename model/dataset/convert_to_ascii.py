@@ -3,8 +3,8 @@ import shutil
 import sys
 from multiprocessing import Pool
 
-sys.path.append("./")
-import utils
+sys.path.append("/".join(os.path.abspath(__file__).split("/")[:-3]))
+from model.dataset import utils
 
 
 def convert(lang):

@@ -1,14 +1,11 @@
-import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.models import load_model
+import os
 import numpy as np
 import sys
 import json
 
-sys.path.append("./dataset")
-import utils
-import sampler
+sys.path.append("/".join(os.path.abspath(__file__).split("/")[:-2]))
+from model.dataset import utils, sampler
 
 
 def estimate_model_accuracy(model):
@@ -63,7 +60,9 @@ def estimate_model_accuracy(model):
     return summary, word_predictions
 
 
-summary, all_predictions = estimate_model_accuracy(load_model("./RMS_model/model.h5"))
+summary, all_predictions = estimate_model_accuracy(
+    keras.models.load_model("./RMS_model/model.h5")
+)
 print(summary)
 
 with open("./RMS_model/testing.txt", "w+") as test_file:

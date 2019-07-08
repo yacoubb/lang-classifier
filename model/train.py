@@ -1,8 +1,8 @@
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.models import load_model
-from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from keras import layers
+from keras.models import load_model
+from keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from sklearn.utils import shuffle
 import numpy as np
 import sys
@@ -10,8 +10,8 @@ import os
 import shutil
 
 
-sys.path.append("./dataset/")
-import utils
+sys.path.append("/".join(os.path.abspath(__file__).split("/")[:-2]))
+from model.dataset import utils
 
 alphabet_size = len(utils.alphabet)
 

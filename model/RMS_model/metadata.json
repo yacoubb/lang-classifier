@@ -1,8 +1,0 @@
-{
-    "maxWordLength": 20,
-    "alphabet": "abcdefghijklmnopqrstuvwxyz",
-    "languages": [
-        "random",
-        "english"
-    ]
-}

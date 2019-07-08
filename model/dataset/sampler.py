@@ -3,8 +3,8 @@ import random
 import json
 import sys
 
-sys.path.append("./")
-import utils
+sys.path.append("/".join(os.path.abspath(__file__).split("/")[:-3]))
+from model.dataset import utils
 
 
 def get_sample(n=1000, languages=utils.get_default_languages()):
