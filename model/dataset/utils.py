@@ -98,7 +98,7 @@ def get_parsed_data(n=1000, langs=None):
                 )
                 word_count = len(words)
                 print(lang, word_count)
-                selection = random.choices(words, k=n)
+                selection = np.random.choice(words, size=n)
                 parsed_data.extend(list(map(lambda x: vectorize_word_2d(x), selection)))
                 labels.extend([language_vectors[lang] for j in range(len(selection))])
                 del selection
