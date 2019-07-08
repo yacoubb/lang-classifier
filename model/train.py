@@ -1,4 +1,3 @@
-import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 from keras.models import load_model
@@ -47,7 +46,7 @@ def train_and_save_model(model_path="", n=1000, langs=None):
     labels = labels[: int(len(labels) * 0.9)]
 
     print(data.shape)
-    model = tf.keras.Sequential(
+    model = keras.Sequential(
         [
             layers.Flatten(input_shape=(utils.max_word_length, alphabet_size)),
             layers.Dense(128, activation="relu"),
@@ -62,18 +61,16 @@ def train_and_save_model(model_path="", n=1000, langs=None):
     # Configure a model for categorical classification.
     model.compile(
         # optimizer=tf.train.RMSPropOptimizer(0.01),
-        optimizer=tf.keras.optimizers.RMSprop(
-            lr=0.0005, rho=0.9, epsilon=None, decay=0.0
-        ),
-        loss=tf.keras.losses.categorical_crossentropy,
-        metrics=[tf.keras.metrics.categorical_accuracy],
+        optimizer=keras.optimizers.RMSprop(lr=0.0005, rho=0.9, epsilon=None, decay=0.0),
+        loss=keras.losses.categorical_crossentropy,
+        metrics=[keras.metrics.categorical_accuracy],
     )
 
     reduce_lr = ReduceLROnPlateau(
         monitor="val_loss", factor=0.2, patience=3, min_lr=0.00001
     )
 
-    early_stopping = tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=5)
+    early_stopping = keras.callbacks.EarlyStopping(monitor="val_loss", patience=5)
 
     model.fit(
         data,
