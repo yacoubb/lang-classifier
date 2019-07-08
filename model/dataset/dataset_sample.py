@@ -41,4 +41,4 @@ def sample_all_datasets(n=1000000):
 
 
 if __name__ == "__main__":
-    sample_all_datasets()
+    sample_all_datasets(500000)
