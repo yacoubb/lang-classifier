@@ -10,8 +10,8 @@ max_word_length = 20
 
 folder_path = "/".join(__file__.split("/")[:-1])
 
-if not os.path.isdir(os.path.join(folder_path, "languages_converted")):
-    os.mkdir(os.path.join(folder_path, "languages_converted"))
+if not os.path.isdir(os.path.join(folder_path, "languages_train")):
+    os.mkdir(os.path.join(folder_path, "languages_train"))
 
 
 def get_default_languages():
@@ -84,9 +84,7 @@ def get_parsed_data(n=1000, langs=None):
     labels = []
     print("language list", langs)
     for lang in langs:
-        langfile_path = os.path.join(
-            folder_path, "languages_converted", (lang + ".txt")
-        )
+        langfile_path = os.path.join(folder_path, "languages_train", (lang + ".txt"))
         if os.path.exists(langfile_path):
             print("loading:", lang)
             with open(langfile_path, "r", newline="") as langfile:
