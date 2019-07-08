@@ -74,7 +74,7 @@ def train_and_save_model(model_path="", n=1000, langs=None, include_random=False
         data,
         labels,
         epochs=40,
-        batch_size=256,
+        batch_size=2048,
         validation_data=(val_data, val_labels),
         callbacks=[reduce_lr, early_stopping],
     )
