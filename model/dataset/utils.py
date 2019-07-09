@@ -83,25 +83,38 @@ def get_parsed_data(n=1000, langs=None):
         langs = get_default_languages()
     parsed_data = []
     labels = []
+    langs = list(
+        filter(
+            lambda lang: os.path.exists(
+                os.path.join(folder_path, "languages_train", (lang + ".txt"))
+            ),
+            langs,
+        )
+    )
+    langs = sorted(
+        langs,
+        key=lambda lang: os.path.getsize(
+            os.path.join(folder_path, "languages_train", (lang + ".txt"))
+        ),
+    )
     print("language list", langs)
     for lang in langs:
         langfile_path = os.path.join(folder_path, "languages_train", (lang + ".txt"))
-        if os.path.exists(langfile_path):
-            print("loading:", lang)
-            with open(langfile_path, "r", newline="") as langfile:
-                words = langfile.readlines()
-                words = list(
-                    filter(
-                        lambda x: len(x) < max_word_length and len(x) > min_word_length,
-                        words,
-                    )
+        print("loading:", lang)
+        with open(langfile_path, "r", newline="") as langfile:
+            words = langfile.readlines()
+            words = list(
+                filter(
+                    lambda x: len(x) < max_word_length and len(x) > min_word_length,
+                    words,
                 )
-                word_count = len(words)
-                print(lang, word_count)
-                selection = np.random.choice(words, size=n)
-                parsed_data.extend(list(map(lambda x: vectorize_word_2d(x), selection)))
-                labels.extend([language_vectors[lang] for j in range(len(selection))])
-                del selection
+            )
+            word_count = len(words)
+            print(lang, word_count)
+            selection = np.random.choice(words, size=n)
+            parsed_data.extend(list(map(lambda x: vectorize_word_2d(x), selection)))
+            labels.extend([language_vectors[lang] for j in range(len(selection))])
+            del selection
 
     return (np.array(parsed_data), np.array(labels))
 
