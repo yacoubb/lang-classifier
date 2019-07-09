@@ -12,7 +12,7 @@ def get_sample(n=1000, languages=utils.get_default_languages()):
     folder_path = "/".join(__file__.split("/")[:-1])
     for lang in languages:
         print(lang)
-        lang_path = os.path.join(folder_path, "languages_converted", (lang + ".txt"))
+        lang_path = os.path.join(folder_path, "languages_train", (lang + ".txt"))
         if not os.path.exists(lang_path):
             print(lang_path, "doesnt exist")
             continue
