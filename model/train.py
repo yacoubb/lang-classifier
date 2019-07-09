@@ -13,12 +13,6 @@ alphabet_size = len(utils.alphabet)
 
 
 def train_and_save_model(model_path="", n=1000, langs=None):
-    def double_shuffle(a, b):
-        rng_state = np.random.get_state()
-        np.random.shuffle(a)
-        np.random.set_state(rng_state)
-        np.random.shuffle(b)
-
     def test_data():
         data = ["hello", "how", "are", "you", "hej", "san", "hur", "gah", "det"]
         data = np.array(list(map(lambda x: utils.vectorize_word_2d(x), data)))
@@ -33,7 +27,6 @@ def train_and_save_model(model_path="", n=1000, langs=None):
 
     data, labels = utils.get_parsed_data(n, langs)
     # data, labels = test_data()
-    print(data[0], labels[0])
     data, labels = shuffle(data, labels)
     val_data = data[int(len(data) * 0.9) :]
     val_labels = labels[int(len(labels) * 0.9) :]
@@ -45,6 +38,7 @@ def train_and_save_model(model_path="", n=1000, langs=None):
         [
             keras.layers.Flatten(input_shape=(utils.max_word_length, alphabet_size)),
             keras.layers.Dense(128, activation="relu"),
+            keras.layers.Dense(64, activation="relu"),
             keras.layers.Dense(len(utils.languages), activation="softmax"),
         ]
     )
