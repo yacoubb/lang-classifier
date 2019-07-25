@@ -1,5 +1,5 @@
 from tensorflow import keras
-from sklearn.utils import shuffle
+from sklearn.model_selection import train_test_split
 import numpy as np
 import sys
 import os
@@ -13,35 +13,19 @@ alphabet_size = len(utils.alphabet)
 
 
 def train_and_save_model(model_path="", n=1000, langs=None):
-    def test_data():
-        data = ["hello", "how", "are", "you", "hej", "san", "hur", "gah", "det"]
-        data = np.array(list(map(lambda x: utils.vectorize_word_2d(x), data)))
-        labels = np.array(
-            [[0, 0, 0, 0, 1, 0, 0, 0] for i in range(4)]
-            + [[0, 0, 1, 0, 0, 0, 0, 0] for i in range(5)]
-        )
-        return (data, labels)
-
-    data = []
-    labels = []
-
     data, labels = utils.get_parsed_data(n, langs)
-    # data, labels = test_data()
-    data, labels = shuffle(data, labels)
-    val_data = data[int(len(data) * 0.9) :]
-    val_labels = labels[int(len(labels) * 0.9) :]
-    data = data[: int(len(data) * 0.9) :]
-    labels = labels[: int(len(labels) * 0.9)]
-
-    print(data.shape)
-    model = keras.Sequential(
-        [
-            keras.layers.Flatten(input_shape=(utils.max_word_length, alphabet_size)),
-            keras.layers.Dense(128, activation="relu"),
-            keras.layers.Dense(64, activation="relu"),
-            keras.layers.Dense(len(utils.languages), activation="softmax"),
-        ]
+    x_train, x_valid, y_train, y_valid = train_test_split(
+        data, labels, test_size=0.33, shuffle=True
     )
+    print(x_train.shape, y_train.shape)
+
+    model = keras.Sequential()
+    model.add(keras.layers.Flatten(input_shape=(utils.max_word_length, alphabet_size)))
+    model.add(keras.layers.Dense(128, activation="relu"))
+    model.add(keras.layers.Dropout(0.2))
+    model.add(keras.layers.Dense(64, activation="relu"))
+    model.add(keras.layers.Dense(len(utils.languages), activation="softmax"))
+
     if model_path != None:
         model = keras.models.load_model(model_path)
 
@@ -50,7 +34,8 @@ def train_and_save_model(model_path="", n=1000, langs=None):
     # Configure a model for categorical classification.
     model.compile(
         # optimizer=tf.train.RMSPropOptimizer(0.01),
-        optimizer=keras.optimizers.RMSprop(lr=0.0005, rho=0.9, epsilon=None, decay=0.0),
+        # optimizer=keras.optimizers.RMSprop(lr=0.0005, rho=0.9, epsilon=None, decay=0.0),
+        optimizer="adam",
         loss=keras.losses.categorical_crossentropy,
         metrics=[keras.metrics.categorical_accuracy],
     )
@@ -62,19 +47,20 @@ def train_and_save_model(model_path="", n=1000, langs=None):
     early_stopping = keras.callbacks.EarlyStopping(monitor="val_loss", patience=5)
 
     model.fit(
-        data,
-        labels,
+        x_train,
+        y_train,
         epochs=100,
         batch_size=1024,
-        validation_data=(val_data, val_labels),
-        callbacks=[reduce_lr, early_stopping],
+        validation_data=(x_valid, y_valid),
+        # callbacks=[reduce_lr, early_stopping],
+        callbacks=[early_stopping],
     )
 
-    if os.path.isdir("RMS_model"):
-        shutil.rmtree("RMS_model")
-    os.mkdir("RMS_model")
-    model.save("RMS_model/model.h5")
-    with open("RMS_model/metadata.json", "w+") as metadata_file:
+    if os.path.isdir("saved_model"):
+        shutil.rmtree("saved_model")
+    os.mkdir("saved_model")
+    model.save("saved_model/model.h5")
+    with open("saved_model/metadata.json", "w+") as metadata_file:
         metadata = {
             "maxWordLength": utils.max_word_length,
             "alphabet": utils.alphabet,
